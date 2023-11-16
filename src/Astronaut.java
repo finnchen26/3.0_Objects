@@ -29,7 +29,7 @@ public class Astronaut {
         xpos = pXpos;
         ypos = pYpos;
         dx = 5;
-        dy = -1;
+        dy = 1;
         width = 100;
         height = 100;
         isAlive = true;
@@ -56,13 +56,35 @@ public class Astronaut {
             dy = -dy;
         }
 
-        if(ypos > 940){
+        if(ypos > 620){
             dy = -dy;
         }
 
         xpos = xpos + dx;
         ypos = ypos + dy;
     }
+
+
+    public void wrap(){
+        if (xpos < 0){
+            xpos = 940;
+        }
+        if (xpos > 940){ //bounce off west wall
+            xpos = 0;
+        }
+
+        if(ypos < 0){
+            ypos = 620;
+        }
+
+        if(ypos > 620){
+            ypos = 0;
+        }
+
+        xpos = xpos + dx;
+        ypos = ypos + dy;
+    }
+
 }
 
 
