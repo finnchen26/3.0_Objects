@@ -103,6 +103,7 @@ public class BasicGameApp implements Runnable {
 		astro2.bounce();
 		if(astro.rect.intersects(astro2.rect)){
 			System.out.println("Crash!");
+			astro.height = astro.height + 10;
 		}
 
 
