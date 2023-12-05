@@ -101,9 +101,14 @@ public class BasicGameApp implements Runnable {
 
 		astro.wrap();
 		astro2.bounce();
-		if(astro.rect.intersects(astro2.rect)){
+		if(astro.rect.intersects(astro2.rect) && !astro.isCrashing){ //"!" means "== false"
 			System.out.println("Crash!");
-			astro.height = astro.height + 10;
+			astro.height = astro.height + 50;
+			astro.isCrashing = true;
+		}
+
+		if (astro.rect.intersects(astro2.rect) == false){
+			astro.isCrashing = false;
 		}
 
 
