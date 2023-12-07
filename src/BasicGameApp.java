@@ -71,9 +71,10 @@ public class BasicGameApp implements Runnable {
       //create (construct) the objects needed for the game and load up 
 		astroPic = Toolkit.getDefaultToolkit().getImage("astronaut.png"); //load the picture
 		astro = new Astronaut((int)(Math.random()*940),(int)(Math.random()*620));
-		background = Toolkit.getDefaultToolkit().getImage("stars.jpg");
+		background = Toolkit.getDefaultToolkit().getImage("teabkg.jpeg");
 		astro2 = new Astronaut((int)(Math.random()*940),(int)(Math.random()*620));
 		astro3 = new Astronaut((int)(Math.random()*940), (int)(Math.random()*620));
+		astro.isAlive = false;
 
 	}// BasicGameApp()
 
@@ -103,16 +104,18 @@ public class BasicGameApp implements Runnable {
 
 		astro.wrap();
 		astro2.bounce();
-		astro3.wrap();
-		if(astro.rect.intersects(astro2.rect) && astro.rect.intersects(astro3.rect) && astro2.rect.intersects(astro3.rect) && !astro.isCrashing && !astro3.isCrashing){ //"!" means "== false"
+		if(astro.rect.intersects(astro2.rect) && !astro.isCrashing && !astro3.isCrashing){ //"!" means "== false"
 			System.out.println("Crash!");
 			astro.height = astro.height + 50;
 			astro.isCrashing = true;
-			astro3.dx = astro3.dx + 20;
+			astro3.isAlive = true;
+			astro3.xpos = astro.xpos;
+			astro3.ypos = astro.ypos;
+
 
 		}
 
-		if (astro.rect.intersects(astro2.rect) == false && astro.rect.intersects(astro3.rect) && astro2.rect.intersects(astro3.rect)){
+		if (astro.rect.intersects(astro2.rect) == false){
 			astro.isCrashing = false;
 		}
 
@@ -172,7 +175,9 @@ public class BasicGameApp implements Runnable {
 		g.drawImage(background, 0, 0, WIDTH, HEIGHT, null);
 		g.drawImage(astroPic, astro.xpos, astro.ypos, astro.width, astro.height, null);
 		g.drawImage(astroPic, astro2.xpos, astro2.ypos, astro2.width, astro2.height, null);
-		g.drawImage(astroPic, astro3.xpos, astro3.ypos, astro3.width, astro3.height, null);
+		if (astro3.isAlive) {
+			g.drawImage(astroPic, astro3.xpos, astro3.ypos, astro3.width, astro3.height, null);
+		}
 		g.dispose();
 
 		bufferStrategy.show();
