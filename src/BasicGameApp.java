@@ -40,7 +40,18 @@ public class BasicGameApp implements Runnable {
 	public BufferStrategy bufferStrategy;
 	public Image astroPic;
 
+	public boolean isDogDead = false;
+
+
+	public Image astroPic2;
+	public Image asteroidPic;
 	public Image background;
+	public Image background2;
+	public Image memePic;
+
+	public Image astroPic3;
+	public Image rip;
+
 
 
 
@@ -49,6 +60,9 @@ public class BasicGameApp implements Runnable {
 	private Astronaut astro;
 	private Astronaut astro2;
 	private Astronaut astro3;
+	private Asteroid asteroid;
+	private Asteroid asteroid2;
+	private Asteroid asteroid3;
 
 
    // Main method definition
@@ -69,12 +83,25 @@ public class BasicGameApp implements Runnable {
        
       //variable and objects
       //create (construct) the objects needed for the game and load up 
-		astroPic = Toolkit.getDefaultToolkit().getImage("astronaut.png"); //load the picture
+		astroPic = Toolkit.getDefaultToolkit().getImage("astroPic.png"); //load the picture
+		astroPic2 = Toolkit.getDefaultToolkit().getImage("astroPic2.png");
+		astroPic3 = Toolkit.getDefaultToolkit().getImage("astroPic3.png");
+		asteroidPic = Toolkit.getDefaultToolkit().getImage("asteroid.png");
+		asteroid = new Asteroid((int)(Math.random()*940), (int)(Math.random()*620));
+		asteroid3 = new Asteroid((int)(Math.random()*940), (int)(Math.random()*620));
+		asteroid2 = new Asteroid((int)(Math.random()*940), (int)(Math.random()*620));
 		astro = new Astronaut((int)(Math.random()*940),(int)(Math.random()*620));
-		background = Toolkit.getDefaultToolkit().getImage("teabkg.jpeg");
+		background = Toolkit.getDefaultToolkit().getImage("background.jpeg");
+		background2 = Toolkit.getDefaultToolkit().getImage("background2.jpeg");
 		astro2 = new Astronaut((int)(Math.random()*940),(int)(Math.random()*620));
 		astro3 = new Astronaut((int)(Math.random()*940), (int)(Math.random()*620));
-		astro.isAlive = false;
+		astro3.isAlive = false;
+		astro3.isCrashing = false;
+		asteroid.isAlive = false;
+		asteroid2.isAlive = false;
+		asteroid3.isAlive = false;
+		memePic = Toolkit.getDefaultToolkit().getImage("meme.jpg");
+		rip = Toolkit.getDefaultToolkit().getImage("rip.png");
 
 	}// BasicGameApp()
 
@@ -104,19 +131,62 @@ public class BasicGameApp implements Runnable {
 
 		astro.wrap();
 		astro2.bounce();
-		if(astro.rect.intersects(astro2.rect) && !astro.isCrashing && !astro3.isCrashing){ //"!" means "== false"
+
+		asteroid.bounce();
+		asteroid2.bounce();
+		asteroid3.bounce();
+		if(astro.rect.intersects(astro2.rect) && !astro.isCrashing && !astro2.isCrashing){ //"!" means "== false"
 			System.out.println("Crash!");
 			astro.height = astro.height + 50;
 			astro.isCrashing = true;
+			astro.isAlive = true;
 			astro3.isAlive = true;
+			astro2.isCrashing = true;
+			asteroid.isAlive = true;
+			asteroid2.isAlive = true;
+			asteroid3.isAlive = true;
+
 			astro3.xpos = astro.xpos;
 			astro3.ypos = astro.ypos;
+			isDogDead = false;
+
 
 
 		}
 
+
+
 		if (astro.rect.intersects(astro2.rect) == false){
 			astro.isCrashing = false;
+			astro2.isCrashing  = false;
+		}
+
+		if (astro3.isAlive ==true && (astro3.rect.intersects(asteroid.rect) == true && asteroid.isCrashing == false)|| (astro3.rect.intersects(asteroid2.rect) == true && !asteroid2.isCrashing)|| (astro3.rect.intersects(asteroid3.rect) == true && !asteroid3.isCrashing)){
+			astro3.isCrashing = true;
+			asteroid.isCrashing = true;
+			asteroid2.isCrashing = true;
+			asteroid3.isCrashing = true;
+			isDogDead = true;
+			System.out.println("dog has been hit");
+
+		}
+
+		if (astro3.rect.intersects(asteroid.rect) == false){
+			asteroid.isCrashing = false;
+		}
+
+		if (astro3.rect.intersects(asteroid2.rect) == false){
+			asteroid2.isCrashing = false;
+		}
+
+		if (astro3.rect.intersects(asteroid3.rect) == false){
+			asteroid3.isCrashing = false;
+		}
+
+		if (astro.height >= 400){
+			astro.xpos = astro2.xpos;
+			astro2.xpos = astro.xpos;
+
 		}
 
 
@@ -173,11 +243,35 @@ public class BasicGameApp implements Runnable {
 
       //draw the image of the astronaut
 		g.drawImage(background, 0, 0, WIDTH, HEIGHT, null);
-		g.drawImage(astroPic, astro.xpos, astro.ypos, astro.width, astro.height, null);
+		g.drawImage(astroPic2, astro.xpos, astro.ypos, astro.width, astro.height, null);
 		g.drawImage(astroPic, astro2.xpos, astro2.ypos, astro2.width, astro2.height, null);
-		if (astro3.isAlive) {
-			g.drawImage(astroPic, astro3.xpos, astro3.ypos, astro3.width, astro3.height, null);
+
+		if(astro3.isAlive){
+			g.drawImage(astroPic3, astro3.xpos, astro3.ypos, astro3.width, astro3.height, null);
+
 		}
+
+		if(asteroid.isAlive){
+			g.drawImage(asteroidPic, asteroid.xpos, asteroid.ypos, asteroid.width, asteroid.height, null);
+
+		}
+		if(asteroid2.isAlive){
+			g.drawImage(asteroidPic, asteroid2.xpos, asteroid2.ypos, asteroid2.width, asteroid2.height, null);
+
+		}
+		if(asteroid3.isAlive){
+			g.drawImage(asteroidPic, asteroid3.xpos, asteroid3.ypos, asteroid3.width, asteroid3.height, null);
+
+		}
+
+		if (isDogDead) {
+			g.drawImage(rip, 230, 100, 500, 100, null);
+		}
+
+		if (astro.height >= 300 && astro.height <= 350){
+			g.drawImage(memePic, 230, 100, 500, 500, null);
+		}
+
 		g.dispose();
 
 		bufferStrategy.show();

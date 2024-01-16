@@ -1,5 +1,5 @@
 import java.awt.*;
-public class BubbleTea {
+public class Asteroid {
     public String name;                //holds the name of the hero
     public int xpos;                //the x position
     public int ypos;                //the y position
@@ -9,9 +9,10 @@ public class BubbleTea {
     public int height;
     public boolean isAlive;            //a boolean to denote if the hero is alive or dead.
     public Rectangle rect;
+
     public boolean isCrashing;
 
-    public BubbleTea(int pXpos, int pYpos) {
+    public Asteroid(int pXpos, int pYpos) {
         xpos = pXpos;
         ypos = pYpos;
         dx = 5;
@@ -51,27 +52,4 @@ public class BubbleTea {
         ypos = ypos + dy;
         rect = new Rectangle(xpos, ypos, width, height);
     }
-
-
-    public void wrap(){
-        if (xpos < 0){
-            xpos = 1000-width;
-        }
-        if (xpos > 1000-width){ //bounce off west wall
-            xpos = 0;
-        }
-
-        if(ypos < 0){
-            ypos = 700-height;
-        }
-
-        if(ypos > 700-height){
-            ypos = 0;
-        }
-
-        xpos = xpos + dx;
-        ypos = ypos + dy;
-        rect = new Rectangle(xpos, ypos, width, height);
-    }
-
 }
