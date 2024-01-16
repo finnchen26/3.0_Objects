@@ -40,7 +40,7 @@ public class BasicGameApp implements Runnable {
 	public BufferStrategy bufferStrategy;
 	public Image astroPic;
 
-	public boolean isDogDead = false;
+
 
 
 	public Image astroPic2;
@@ -148,7 +148,7 @@ public class BasicGameApp implements Runnable {
 
 			astro3.xpos = astro.xpos;
 			astro3.ypos = astro.ypos;
-			isDogDead = false;
+			astro3.rect = new Rectangle(astro3.xpos, astro3.ypos, astro3.width, astro3.height);
 
 
 
@@ -161,12 +161,11 @@ public class BasicGameApp implements Runnable {
 			astro2.isCrashing  = false;
 		}
 
-		if (astro3.isAlive ==true && (astro3.rect.intersects(asteroid.rect) == true && asteroid.isCrashing == false)|| (astro3.rect.intersects(asteroid2.rect) == true && !asteroid2.isCrashing)|| (astro3.rect.intersects(asteroid3.rect) == true && !asteroid3.isCrashing)){
+		if (astro3.isAlive ==true && (astro3.rect.intersects(asteroid.rect) == true && asteroid.isCrashing == false)|| astro3.isAlive ==true && (astro3.rect.intersects(asteroid2.rect) == true && !asteroid2.isCrashing)|| astro3.isAlive ==true && (astro3.rect.intersects(asteroid3.rect) == true && !asteroid3.isCrashing)){
 			astro3.isCrashing = true;
 			asteroid.isCrashing = true;
 			asteroid2.isCrashing = true;
 			asteroid3.isCrashing = true;
-			isDogDead = true;
 			System.out.println("dog has been hit");
 
 		}
@@ -183,11 +182,7 @@ public class BasicGameApp implements Runnable {
 			asteroid3.isCrashing = false;
 		}
 
-		if (astro.height >= 400){
-			astro.xpos = astro2.xpos;
-			astro2.xpos = astro.xpos;
 
-		}
 
 
 
@@ -264,7 +259,7 @@ public class BasicGameApp implements Runnable {
 
 		}
 
-		if (isDogDead) {
+		if ((astro3.rect.intersects(asteroid.rect) || astro3.rect.intersects(asteroid2.rect)  || astro3.rect.intersects(asteroid3.rect)  )) {
 			g.drawImage(rip, 230, 100, 500, 100, null);
 		}
 
